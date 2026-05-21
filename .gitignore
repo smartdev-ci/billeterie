@@ -1,3 +1,4 @@
+Nothing should be ignored based on the provided file changes, as they only include source code files (.php, .blade.php) and route configuration files, with no build artifacts, dependencies, or temporary files present in the change list.
 *.log
 .DS_Store
 .env
