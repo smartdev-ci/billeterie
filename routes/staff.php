@@ -10,8 +10,28 @@ Route::middleware(['auth', 'role:admin,organizer'])
     ->group(function () {
         
         Route::get('/', function () {
-            return view('staff.dashboard');
+            return view('staff.dashboard.index');
         })->name('dashboard');
+
+        Route::get('/dashboard/live', function () {
+            $metrics = [
+                'sold' => 0,
+                'fill_rate' => 0,
+                'revenue' => 0,
+                'recent_validations' => 0
+            ];
+            return view('staff.dashboard.live', compact('metrics'));
+        })->name('dashboard.live');
+
+        Route::get('/dashboard/stats', function () {
+            $metrics = [
+                'sold' => rand(100, 500),
+                'fill_rate' => rand(60, 95),
+                'revenue' => rand(50000, 200000),
+                'recent_validations' => rand(10, 50)
+            ];
+            return response()->json($metrics);
+        })->name('dashboard.stats');
 
         // ✅ Correction : pointer vers 'validateTicket', PAS 'validate'
         Route::get('/qr/scan', [QRScanController::class, 'scan'])->name('qr.scan');
