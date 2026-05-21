@@ -25,7 +25,7 @@ class QRScanController extends Controller
     public function scan(): View
     {
         $this->authorize('validate', Ticket::class);
-        return view('staff.qr.scan');
+        return view('scanner.scan');
     }
 
     public function validateTicket(QRValidationRequest $request): JsonResponse

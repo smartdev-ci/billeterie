@@ -9,7 +9,7 @@ class TicketPolicy
 {
     public function validate(User $user): bool
     {
-        return in_array($user->role, ['admin', 'organizer'], true);
+        return in_array($user->role, ['admin', 'organizer', 'scanner'], true);
     }
 
     public function view(User $user, Ticket $ticket): bool

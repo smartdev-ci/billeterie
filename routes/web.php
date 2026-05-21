@@ -47,6 +47,20 @@ Route::get('/order/{order:uuid}/success', fn(Order $order) => view('order.succes
 
 /*
 |--------------------------------------------------------------------------
+| SCANNER ROUTES (Scanner ONLY) — Validation QR uniquement
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:scanner'])
+    ->prefix('scanner')
+    ->name('scanner.')
+    ->group(function () {
+        // QR Scan & Validation - accès exclusif pour le rôle scanner
+        Route::get('/qr/scan', [QRScanController::class, 'scan'])->name('qr.scan');
+        Route::post('/qr/validate', [QRScanController::class, 'validateTicket'])->name('qr.validate');
+    });
+
+/*
+|--------------------------------------------------------------------------
 | STAFF ROUTES (Admin + Organizer ONLY)
 |--------------------------------------------------------------------------
 */
@@ -55,8 +69,8 @@ Route::middleware(['auth', 'role:admin,organizer'])
     ->name('staff.')
     ->group(function () {
         // QR Scan & Validation
-        Route::get('/qr/scan', [QRScanController::class, 'index'])->name('qr.scan');
-        Route::post('/qr/validate', [QRScanController::class, 'validate'])->name('qr.validate');
+        Route::get('/qr/scan', [QRScanController::class, 'scan'])->name('qr.scan');
+        Route::post('/qr/validate', [QRScanController::class, 'validateTicket'])->name('qr.validate');
         Route::get('/qr/recent-scans', [QRScanController::class, 'recentScans'])->name('qr.recent-scans');
 
         // Gestion Commandes & Paiements
