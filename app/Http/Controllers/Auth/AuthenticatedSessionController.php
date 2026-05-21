@@ -41,6 +41,7 @@ class AuthenticatedSessionController extends Controller
         return match ($user->role) {
             User::ROLE_ADMIN => redirect()->route('admin.dashboard'),
             User::ROLE_ORGANIZER => redirect()->route('staff.dashboard'),
+            User::ROLE_SCANNER => redirect()->route('scanner.qr.scan'),
             User::ROLE_USER => redirect()->route('home'),
             default => redirect('/'),
         };
