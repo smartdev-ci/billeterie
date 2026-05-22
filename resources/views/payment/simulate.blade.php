@@ -67,23 +67,30 @@
                         Choisissez le résultat à simuler pour tester le comportement de l'application.
                     </p>
 
-                    <form action="{{ route('payment.callback') }}" method="POST" class="space-y-3">
+                    <form action="{{ route('checkout.simulate.success') }}" method="POST" class="space-y-3">
                         @csrf
-                        <input type="hidden" name="order_uuid" value="{{ $order->uuid }}">
 
-                        <button type="submit" name="status" value="success"
+                        <button type="submit"
                             class="w-full py-4 px-6 bg-green-600 hover:bg-green-700 text-white font-bold font-space-grotesk text-base rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-green-500/20 flex items-center justify-center gap-2">
                             <i class="fas fa-check-circle"></i>
                             Simuler un paiement réussi
                         </button>
+                    </form>
 
-                        <button type="submit" name="status" value="failed"
+                    <form action="{{ route('checkout.simulate.failure') }}" method="POST" class="space-y-3 mt-3">
+                        @csrf
+
+                        <button type="submit"
                             class="w-full py-4 px-6 bg-red-600 hover:bg-red-700 text-white font-bold font-space-grotesk text-base rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-red-500/20 flex items-center justify-center gap-2">
                             <i class="fas fa-times-circle"></i>
                             Simuler un échec de paiement
                         </button>
+                    </form>
 
-                        <button type="submit" name="status" value="pending"
+                    <form action="{{ route('checkout.simulate.pending') }}" method="POST" class="space-y-3 mt-3">
+                        @csrf
+
+                        <button type="submit"
                             class="w-full py-4 px-6 bg-yellow-600 hover:bg-yellow-700 text-white font-bold font-space-grotesk text-base rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2">
                             <i class="fas fa-clock"></i>
                             Simuler un paiement en attente

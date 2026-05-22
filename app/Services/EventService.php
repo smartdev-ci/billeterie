@@ -19,22 +19,30 @@ class EventService
         if ($event->isSoldOut()) {
             throw ValidationException::withMessages([
                 'quantity' => 'L\'événement est complet.'
-            ]);
-        }
+            ]);\n        }
 
         if ($requestedQuantity > $event->availableTickets()) {
             throw ValidationException::withMessages([
                 'quantity' => "Seulement {$event->availableTickets()} billet(s) disponible(s)."
-            ]);
-        }
+            ]);\n        }
 
         // Verrouillage pessimiste pour éviter la survente concurrente
         $event = $event->lockForUpdate()->first();
         if ($event->isSoldOut() || $requestedQuantity > $event->availableTickets()) {
             throw ValidationException::withMessages([
                 'quantity' => 'Stock insuffisant au moment du paiement. Réessayez.'
-            ]);
-        }
+            ]);\n        }
+    }
+
+    /**
+     * Libérer un quota réservé (en cas d'échec de paiement ou expiration)
+     */
+    public function releaseReservedQuota(int $quantity): void
+    {
+        // Dans cette implémentation simple, le quota est géré par la différence
+        // entre capacity et les tickets vendus/validés
+        // Cette méthode pourrait être étendue pour gérer des réservations temporaires
+        // avec un système de timeout
     }
 
     public function confirmSale(Order $order, int $quantity): void
