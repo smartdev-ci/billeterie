@@ -8,7 +8,9 @@ use App\Models\Order;
 use App\Services\EventService;
 use App\Services\Payment\PaymentService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
@@ -16,6 +18,11 @@ class CheckoutController extends Controller
         private EventService $eventService,
         private PaymentService $paymentService
     ) {}
+
+    public function show(Request $request): View
+    {
+        return view('order.checkout');
+    }
 
     public function store(PurchaseTicketRequest $request): RedirectResponse
     {
