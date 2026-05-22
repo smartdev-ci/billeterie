@@ -1,5 +1,4 @@
-```
-# Compiled and build artifacts
+
 *.pyc
 __pycache__/
 *.o
@@ -71,4 +70,4 @@ htmlcov/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
-```
+vendor/

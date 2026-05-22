@@ -15,7 +15,7 @@
             <p class="text-sm text-gray-500">Connecté(e) en tant que {{ auth()->user()->name }}</p>
         </header>
         <main>
-            {{ $slot }}
+           @yield('content')
         </main>
     </div>
 </body>
