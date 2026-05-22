@@ -11,7 +11,7 @@
             {{-- Header --}}
             <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-5xl font-bold font-bebas-neue mb-4">
-                    Simulation de Paiement
+                    Simulation de Paiement en ligne
                 </h1>
                 <p class="text-gray-400 text-lg">
                     Testez le flux de paiement sans effectuer de transaction réelle
