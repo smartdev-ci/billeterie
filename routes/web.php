@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventConfigController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Staff\OrderManagementController;
 use App\Http\Controllers\Staff\LiveDashboardController;
 
@@ -104,6 +105,15 @@ Route::middleware(['auth', 'role:admin'])
         // Gestion des acheteurs (liste utilisateurs + guests)
         // Route::get('/customers', [App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
     });
+
+
+/*
+|--------------------------------------------------------------------------
+| Google Socialite
+|--------------------------------------------------------------------------
+*/
+Route::get('/auth/{provider}', [GoogleAuthController::class, 'redirect']);
+Route::get('/auth/{provider}/callback', [GoogleAuthController::class, 'callback']);
 
 /*
 |--------------------------------------------------------------------------

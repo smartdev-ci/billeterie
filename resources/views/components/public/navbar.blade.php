@@ -15,8 +15,23 @@
                 <a href="#faq" class="text-sm font-medium text-white/70 hover:text-orange-400 transition">FAQ</a>
             </div>
 
-            {{-- CTA Button --}}
-            <div class="hidden md:block">
+            {{-- CTA + Auth --}}
+            <div class="hidden md:flex items-center gap-3">
+                @auth
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-white/70">{{ auth()->user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-sm text-white/50 hover:text-red-400 transition">
+                                Déconnexion
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm font-medium text-white/70 hover:text-white transition px-4 py-2 border border-white/20 rounded-lg hover:border-white/40">
+                        Se connecter
+                    </a>
+                @endauth
                 <a href="{{ route('checkout.show') }}" class="inline-flex items-center px-5 py-2 bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold rounded-lg transition shadow-lg shadow-orange-600/25">
                     Reserver
                 </a>
@@ -42,6 +57,17 @@
             <a href="{{ route('checkout.show') }}" class="block text-sm font-medium text-white/70 hover:text-orange-400 py-2">Billetterie</a>
             <a href="#gallery" class="block text-sm font-medium text-white/70 hover:text-orange-400 py-2">Galerie</a>
             <a href="#faq" class="block text-sm font-medium text-white/70 hover:text-orange-400 py-2">FAQ</a>
+            @auth
+                <div class="pt-2 border-t border-white/10">
+                    <span class="block text-sm text-white/50 py-1">{{ auth()->user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-sm text-red-400 py-2">Déconnexion</button>
+                    </form>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="block text-sm font-medium text-white/70 hover:text-orange-400 py-2">Se connecter</a>
+            @endauth
             <a href="{{ route('checkout.show') }}" class="block w-full text-center px-5 py-3 bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold rounded-lg transition mt-4">
                 Reserver maintenant
             </a>
