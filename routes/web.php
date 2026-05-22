@@ -46,7 +46,7 @@ Route::post('/payments/mobile-money/callback', [MobileMoneyPaymentController::cl
 // Webhook pour les vrais paiements (OM/MTN)
 Route::post('/payments/webhook', [MobileMoneyPaymentController::class, 'webhook'])
     ->name('payment.webhook');
-Route::get('/order/{order:uuid}/success', fn(Order $order) => view('order.success', compact('order')))
+Route::get('/order/{order:uuid}/success', fn(Order $order) => view('order.order-success', compact('order')))
     ->name('order.success');
 
 /*

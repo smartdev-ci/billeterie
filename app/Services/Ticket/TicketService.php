@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Models\AdminAuditLog;
 use App\Services\QR\QRCodeService;
 use App\Jobs\SendTicketEmailJob;
+use App\Mail\TicketPurchasedMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TicketService
 {
