@@ -39,28 +39,8 @@ class EventService
 
     public function confirmSale(Order $order, int $quantity): void
     {
-        $event = Event::current();
-
-        DB::transaction(function () use ($event, $order, $quantity) {
-            $event->increment('tickets_sold', $quantity);
-
-            foreach (range(1, $quantity) as $i) {
-                Ticket::create([
-                    'order_id' => $order->id,
-                    'user_id' => $order->user_id,
-                    'event_id' => $event->id,
-                    'customer_email' => $order->customer_email,
-                    'qr_code' => '', // Généré par QRService au Sprint 4
-                    'qr_signature' => '', // Signé au Sprint 4
-                    'status' => 'valid',
-                ]);
-            }
-
-            if ($event->isSoldOut()) {
-                $event->update(['status' => 'sold_out']);
-            }
-        });
-        // ... à la fin de la transaction
-        app(\App\Services\Analytics\AnalyticsService::class)->clearCache();
+        // Cette méthode est dépréciée - la génération des tickets se fait dans CheckoutController
+        // avec QR code et signature appropriés
+        throw new \LogicException('confirmSale() est dépréciée. Utilisez CheckoutController::generateTickets()');
     }
 }
