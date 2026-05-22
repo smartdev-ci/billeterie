@@ -19,48 +19,36 @@ class EventService
         if ($event->isSoldOut()) {
             throw ValidationException::withMessages([
                 'quantity' => 'L\'événement est complet.'
-            ]);
-        }
+            ]);\n        }
 
         if ($requestedQuantity > $event->availableTickets()) {
             throw ValidationException::withMessages([
                 'quantity' => "Seulement {$event->availableTickets()} billet(s) disponible(s)."
-            ]);
-        }
+            ]);\n        }
 
         // Verrouillage pessimiste pour éviter la survente concurrente
         $event = $event->lockForUpdate()->first();
         if ($event->isSoldOut() || $requestedQuantity > $event->availableTickets()) {
             throw ValidationException::withMessages([
                 'quantity' => 'Stock insuffisant au moment du paiement. Réessayez.'
-            ]);
-        }
+            ]);\n        }
+    }
+
+    /**
+     * Libérer un quota réservé (en cas d'échec de paiement ou expiration)
+     */
+    public function releaseReservedQuota(int $quantity): void
+    {
+        // Dans cette implémentation simple, le quota est géré par la différence
+        // entre capacity et les tickets vendus/validés
+        // Cette méthode pourrait être étendue pour gérer des réservations temporaires
+        // avec un système de timeout
     }
 
     public function confirmSale(Order $order, int $quantity): void
     {
-        $event = Event::current();
-
-        DB::transaction(function () use ($event, $order, $quantity) {
-            $event->increment('tickets_sold', $quantity);
-
-            foreach (range(1, $quantity) as $i) {
-                Ticket::create([
-                    'order_id' => $order->id,
-                    'user_id' => $order->user_id,
-                    'event_id' => $event->id,
-                    'customer_email' => $order->customer_email,
-                    'qr_code' => '', // Généré par QRService au Sprint 4
-                    'qr_signature' => '', // Signé au Sprint 4
-                    'status' => 'valid',
-                ]);
-            }
-
-            if ($event->isSoldOut()) {
-                $event->update(['status' => 'sold_out']);
-            }
-        });
-        // ... à la fin de la transaction
-        app(\App\Services\Analytics\AnalyticsService::class)->clearCache();
+        // Cette méthode est dépréciée - la génération des tickets se fait dans CheckoutController
+        // avec QR code et signature appropriés
+        throw new \LogicException('confirmSale() est dépréciée. Utilisez CheckoutController::generateTickets()');
     }
 }

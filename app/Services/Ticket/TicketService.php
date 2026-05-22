@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Models\AdminAuditLog;
 use App\Services\QR\QRCodeService;
 use App\Jobs\SendTicketEmailJob;
+use App\Mail\TicketPurchasedMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TicketService
 {
@@ -23,6 +25,7 @@ class TicketService
                     'user_id'        => $order->user_id,
                     'event_id'       => 1,
                     'customer_email' => $order->customer_email,
+                    'customer_name'  => $order->customer_name,
                     'status'         => 'valid',
                 ]);
 
@@ -33,8 +36,13 @@ class TicketService
             }
         });
 
-        // Envoi asynchrone pour ne pas bloquer le callback
-        dispatch(new SendTicketEmailJob($order))->onQueue('emails');
+        // Envoi synchrone en production pour garantir l'envoi
+        // Asynchrone en dev avec queue si Redis est configuré
+        if (config('queue.default') === 'sync' || !config('queue.connections.emails')) {
+            Mail::to($order->customer_email)->send(new TicketPurchasedMail($order));
+        } else {
+            dispatch(new SendTicketEmailJob($order))->onQueue('emails');
+        }
     }
 
     public function validateAndMarkUsed(string $uuid, User $validator, array $requestContext): array

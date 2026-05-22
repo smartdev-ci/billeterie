@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Staff\OrderManagementController;
 use App\Http\Controllers\Staff\LiveDashboardController;
+use App\Http\Controllers\TicketController;
 
 use App\Models\Order;
 
@@ -38,13 +39,34 @@ Route::post('/checkout', [CheckoutController::class, 'store'])
     ->name('checkout.store')
     ->middleware('throttle:5,1');
 
+// Simulation de paiement (dev only)
+Route::post('/checkout/simulate/success', [CheckoutController::class, 'simulateSuccess'])->name('checkout.simulate.success');
+Route::post('/checkout/simulate/failure', [CheckoutController::class, 'simulateFailure'])->name('checkout.simulate.failure');
+Route::post('/checkout/simulate/pending', [CheckoutController::class, 'simulatePending'])->name('checkout.simulate.pending');
+
 // Payment simulation & callback
 Route::get('/payment/simulate/{order}', [MobileMoneyPaymentController::class, 'showSimulation'])
     ->name('payment.simulate');
 Route::post('/payments/mobile-money/callback', [MobileMoneyPaymentController::class, 'callback'])
     ->name('payment.callback');
-Route::get('/order/{order:uuid}/success', fn(Order $order) => view('order.success', compact('order')))
+// Webhook pour les vrais paiements (OM/MTN)
+Route::post('/payments/webhook', [MobileMoneyPaymentController::class, 'webhook'])
+    ->name('payment.webhook');
+Route::get('/order/{order:uuid}/success', fn(Order $order) => view('order.order-success', compact('order')))
     ->name('order.success');
+
+/*
+|--------------------------------------------------------------------------
+| USER TICKETS ROUTES (Auth User ONLY)
+|--------------------------------------------------------------------------*/
+Route::middleware(['auth'])
+    ->prefix('tickets')
+    ->name('tickets.')
+    ->group(function () {
+        Route::get('/', [TicketController::class, 'index'])->name('index');
+        Route::get('/{uuid}', [TicketController::class, 'show'])->name('show');
+        Route::get('/{uuid}/download', [TicketController::class, 'downloadPdf'])->name('download');
+    });
 
 /*
 |--------------------------------------------------------------------------
