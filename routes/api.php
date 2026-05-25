@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Public routes
+Route::get('/event', [EventController::class, 'show']); // Get active event (no ID needed)
+Route::get('/event/{id}', [EventController::class, 'show']); // Get specific event
+Route::get('/event/{id}/available-tickets', [EventController::class, 'availableTickets']);
+
+// Protected routes (Organizer/Admin only)
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('events', EventController::class);
 });
