@@ -1,0 +1,82 @@
+```
+# Dependency directories
+vendor/
+node_modules/
+
+# Build and cache directories
+bootstrap/cache/
+storage/framework/cache/
+storage/framework/views/
+storage/logs/
+cache/
+dist/
+build/
+target/
+
+# Environment specific
+.env
+.env.local
+.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# PHP/Laravel specific
+*.php~
+.php_cs.cache
+.phpunit.result.cache
+
+# Logs
+*.log
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.pyc
+__pycache__/
+
+# Package lock files (already in git but good to have)
+composer.lock
+package-lock.json
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```
