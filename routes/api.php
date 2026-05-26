@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\TicketValidationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,18 @@ Route::prefix('payment')->group(function () {
     // Simulation routes (local development only)
     Route::get('/simulation/{orderId}', [PaymentController::class, 'simulationPage'])->name('payment.simulation');
     Route::post('/simulate-success/{orderId}', [PaymentController::class, 'simulateSuccess']);
+});
+
+// Ticket validation routes (Scanner PWA)
+Route::prefix('tickets')->group(function () {
+    // Validate ticket (mark as used) - requires auth
+    Route::post('/validate', [TicketValidationController::class, 'validate'])->middleware('auth:sanctum');
+    
+    // Check ticket without marking as used - requires auth
+    Route::post('/check', [TicketValidationController::class, 'check'])->middleware('auth:sanctum');
+    
+    // Scan history for scanner - requires auth
+    Route::get('/scan-history', [TicketValidationController::class, 'scanHistory'])->middleware('auth:sanctum');
 });
 
 // Protected routes (Organizer/Admin only)
